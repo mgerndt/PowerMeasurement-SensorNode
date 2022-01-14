@@ -1,0 +1,107 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Firmware",
+            "type": "shell",
+            "command": "${config:esp_idf_command} build",
+            "options": {
+                "env": {
+                    "PATH": "${config:esp_extra_paths}"
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                {
+                    "owner": "cpp",
+                    "fileLocation": ["relative", "${workspaceFolder}"],
+                    "pattern": {
+                        "regexp": "^\\.\\.(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "severity": 4,
+                        "message": 5
+                    }
+                },
+                {
+                    "owner": "cpp",
+                    "fileLocation": "absolute",
+                    "pattern": {
+                        "regexp": "^[^\\.](.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "severity": 4,
+                        "message": 5
+                    }
+                }
+						]
+        },
+        {
+            "label": "OpenOCD",
+            "type": "shell",
+            "isBackground": true,
+            "options": {
+                "cwd": "${config:openocd_root_dir}"
+            },
+            "command": "bin/openocd -f interface/ftdi/esp32_devkitj_v1.cfg -f target/esp32.cfg",
+            "problemMatcher": []
+        },
+        {
+            "label": "Flash and Monitor Device",
+            "type": "shell",
+            "command": "${config:esp_idf_command} -p ${config:esp_device_port} -b ${config:esp_device_baud} flash monitor",
+            "options": {
+                "env": {
+                    "PATH": "${config:esp_extra_paths}"
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build, Flash, Monitor",
+            "type": "shell",
+            "command": "${config:esp_idf_command} -p ${config:esp_device_port} -b ${config:esp_device_baud} build flash monitor",
+            "options": {
+                "env": {
+                    "PATH": "${config:esp_extra_paths}"
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Flash Device",
+            "type": "shell",
+            "command": "${config:esp_idf_command} -p ${config:esp_device_port} -b ${config:esp_device_baud} flash",
+            "options": {
+                "env": {
+                    "PATH": "${config:esp_extra_paths}"
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Monitor Device",
+            "type": "shell",
+            "command": "${config:esp_idf_command} -p ${config:esp_device_port} -b ${config:esp_device_baud} monitor",
+            "options": {
+                "env": {
+                    "PATH": "${config:esp_extra_paths}"
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean Project",
+            "type": "shell",
+            "command": "${config:esp_idf_command} fullclean",
+            "problemMatcher": []
+        },
+    ]
+}
